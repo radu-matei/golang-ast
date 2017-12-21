@@ -27,20 +27,35 @@ func main() {
 	ast.Inspect(f, func(n ast.Node) bool {
 		switch x := n.(type) {
 		case *ast.FuncDecl:
-			for _, p := range x.Type.Params.List {
+			if x.Name.Name == "test" {
 
-				tv, ok := info.Types[p.Type]
-				if !ok {
-					fmt.Printf("nil...\n")
-					return false
+				fmt.Printf("input: \n")
+				for _, p := range x.Type.Params.List {
+					tv, ok := info.Types[p.Type]
+					if !ok {
+						fmt.Printf("nil...\n")
+						return false
+					}
+					fmt.Printf("%v %v \n", p.Names, tv.Type)
 				}
-				fmt.Printf("%v %v \n", p.Names, tv.Type)
+
+				fmt.Printf("output: \n")
+				for _, o := range x.Type.Results.List {
+					tv, ok := info.Types[o.Type]
+					if !ok {
+						fmt.Printf("nil...\n")
+						return false
+					}
+					fmt.Printf("%v %v \n", o.Names, tv.Type)
+				}
 			}
+
 		}
 		return true
 	})
 }
 
-func test(anotherint, n int, abc string, req http.Request) {
+func test(anotherint, n int, abc string, req *http.Request) (string, error) {
 
+	return "", nil
 }
